@@ -1,0 +1,100 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-5">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Nuevo Socio</h5>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="socioForm" (ngSubmit)="onSubmit()">
+            
+            <div class="row mb-2">
+              <div class="col">
+                <label>Nombre</label>
+                <input type="text" formControlName="nombre" class="form-control form-control-sm">
+              </div>
+              <div class="col">
+                <label>Apellido</label>
+                <input type="text" formControlName="apellido" class="form-control form-control-sm">
+              </div>
+            </div>
+
+            <div class="row mb-2">
+              <div class="col">
+                <label>DNI</label>
+                <input type="number" formControlName="dni" class="form-control form-control-sm">
+              </div>
+              <div class="col">
+                <label>Email</label>
+                <input type="email" formControlName="correoElectronico" class="form-control form-control-sm">
+              </div>
+            </div>
+
+            <hr>
+            <h6>Dirección</h6>
+            <div formGroupName="direccion" class="row mb-2">
+              <div class="col-8">
+                <input type="text" formControlName="calle" placeholder="Calle" class="form-control form-control-sm">
+              </div>
+              <div class="col-4">
+                <input type="text" formControlName="numero" placeholder="N°" class="form-control form-control-sm">
+              </div>
+            </div>
+
+            <hr>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h6 class="mb-0">Teléfonos</h6>
+              <button type="button" class="btn btn-sm btn-outline-success" (click)="agregarTelefono()">+ Agregar</button>
+            </div>
+            
+            <div formArrayName="telefonos">
+              <div *ngFor="let tel of telefonos.controls; let i=index" [formGroupName]="i" class="input-group input-group-sm mb-2">
+                <input type="text" formControlName="numero" class="form-control" placeholder="Número">
+                <button type="button" class="btn btn-outline-danger" (click)="eliminarTelefono(i)">X</button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 mt-3" [disabled]="socioForm.invalid">
+              Guardar Socio
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-7">
+      <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">Listado de Socios</h5>
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-hover mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>DNI</th>
+                <th>Socio</th>
+                <th>Ciudad</th>
+                <th>Teléfonos</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let socio of socios">
+                <td>{{ socio.dni }}</td>
+                <td>{{ socio.apellido }}, {{ socio.nombre }}</td>
+                <td>{{ socio.direccion?.ciudad || 'N/A' }}</td>
+                <td>{{ socio.telefonos?.length || 0 }} nros</td>
+                <td>
+                  <button class="btn btn-sm btn-danger" (click)="eliminarSocio(socio.id)">🗑️</button>
+                </td>
+              </tr>
+              <tr *ngIf="socios.length === 0">
+                <td colspan="5" class="text-center text-muted py-3">No hay socios registrados.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

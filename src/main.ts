@@ -16,6 +16,8 @@ async function bootstrap() {
     }),
   );
 
+  app.enableCors();
+
   // Esto te confirmará en consola que todo levantó bien
   Logger.log(
     `🚀 Aplicación corriendo en: http://localhost:${port}`,
