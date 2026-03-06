@@ -1,26 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateTelefonoDto } from './dto/create-telefono.dto';
 import { UpdateTelefonoDto } from './dto/update-telefono.dto';
+import { Telefono } from './entities/telefono.entity';
 
 @Injectable()
 export class TelefonoService {
-  create(createTelefonoDto: CreateTelefonoDto) {
-    return 'This action adds a new telefono';
+  constructor(
+    @InjectRepository(Telefono)
+    private readonly telefonoRepository: Repository<Telefono>,
+  ) {}
+
+  async create(createTelefonoDto: CreateTelefonoDto): Promise<Telefono> {
+    const nuevoTelefono = this.telefonoRepository.create(createTelefonoDto);
+    return await this.telefonoRepository.save(nuevoTelefono);
   }
 
-  findAll() {
-    return `This action returns all telefono`;
+  async findAll(): Promise<Telefono[]> {
+    return await this.telefonoRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} telefono`;
+  async findOne(id: number): Promise<Telefono> {
+    const telefono = await this.telefonoRepository.findOneBy({ id });
+    if (!telefono) {
+      throw new NotFoundException(`Teléfono con ID ${id} no encontrado`);
+    }
+    return telefono;
   }
 
-  update(id: number, updateTelefonoDto: UpdateTelefonoDto) {
-    return `This action updates a #${id} telefono`;
+  async update(
+    id: number,
+    updateTelefonoDto: UpdateTelefonoDto,
+  ): Promise<Telefono> {
+    const telefono = await this.telefonoRepository.preload({
+      id: id,
+      ...updateTelefonoDto,
+    });
+
+    if (!telefono) {
+      throw new NotFoundException(
+        `No se pudo actualizar: Teléfono #${id} no existe`,
+      );
+    }
+
+    return await this.telefonoRepository.save(telefono);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} telefono`;
+  async remove(id: number): Promise<void> {
+    const telefono = await this.findOne(id);
+    await this.telefonoRepository.remove(telefono);
   }
 }
