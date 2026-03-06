@@ -1,26 +1,68 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateSocioDto } from './dto/create-socio.dto';
 import { UpdateSocioDto } from './dto/update-socio.dto';
+import { Socio } from './entities/socio.entity';
 
 @Injectable()
 export class SocioService {
-  create(createSocioDto: CreateSocioDto) {
-    return 'This action adds a new socio';
+  constructor(
+    @InjectRepository(Socio)
+    private readonly socioRepository: Repository<Socio>,
+  ) {}
+
+  async create(createSocioDto: CreateSocioDto): Promise<Socio> {
+    try {
+      // Usar el método .create() es vital porque mapea el DTO a la clase Entidad
+      // detectando qué objetos son relaciones.
+      const nuevoSocio = this.socioRepository.create(createSocioDto);
+
+      return await this.socioRepository.save(nuevoSocio);
+    } catch (error) {
+      // Esto te ayudará a ver si es un error de BD o de TypeORM
+      console.error('Error detallado:', error);
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all socio`;
+  async findAll(): Promise<Socio[]> {
+    // Usamos 'relations' para que traiga los datos de las otras tablas
+    // Si no pones esto, los campos direccion, caja, etc. vendrán vacíos
+    return await this.socioRepository.find({
+      relations: ['direccion', 'caja', 'estado', 'telefonos'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} socio`;
+  async findOne(id: number): Promise<Socio> {
+    const socio = await this.socioRepository.findOne({
+      where: { id },
+      relations: ['direccion', 'caja', 'estado', 'telefonos'],
+    });
+
+    if (!socio) {
+      throw new NotFoundException(`Socio con ID ${id} no encontrado`);
+    }
+    return socio;
   }
 
-  update(id: number, updateSocioDto: UpdateSocioDto) {
-    return `This action updates a #${id} socio`;
+  async update(id: number, updateSocioDto: UpdateSocioDto): Promise<Socio> {
+    const socio = await this.socioRepository.preload({
+      id: id,
+      ...updateSocioDto,
+    });
+
+    if (!socio) {
+      throw new NotFoundException(
+        `No se pudo actualizar: Socio #${id} no existe`,
+      );
+    }
+
+    return await this.socioRepository.save(socio);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} socio`;
+  async remove(id: number): Promise<void> {
+    const socio = await this.findOne(id);
+    await this.socioRepository.remove(socio);
   }
 }

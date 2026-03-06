@@ -5,6 +5,7 @@ import {
   ManyToOne,
   ManyToMany,
   JoinTable,
+  JoinColumn,
 } from 'typeorm';
 import { Caja } from '../../caja/entities/caja.entity';
 import { Estado } from '../../estado/entities/estado.entity';
@@ -43,8 +44,12 @@ export class Socio {
   // --- RELACIONES (Foreign Keys) ---
 
   // Muchos socios pueden vivir en la misma dirección (o puedes usar @OneToOne si es estricto)
-  @ManyToOne(() => Direccion)
-  direccion!: Direccion;
+  @ManyToOne(() => Direccion, {
+    cascade: true,
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'direccionId' })
+  direccion?: Direccion;
 
   // Muchos socios pertenecen a una Caja
   @ManyToOne(() => Caja)
@@ -55,9 +60,9 @@ export class Socio {
   estado!: Estado;
 
   // Relación Muchos a Muchos (Tabla intermedia socio x telefono)
-  @ManyToMany(() => Telefono)
+  @ManyToMany(() => Telefono, { cascade: true }) // <-- Asegúrate de tener cascade: true
   @JoinTable({
-    name: 'socio_telefonos', // Nombre de la tabla intermedia que TypeORM creará por ti
+    name: 'socio_telefonos',
     joinColumn: { name: 'socio_id', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'telefono_id', referencedColumnName: 'id' },
   })
