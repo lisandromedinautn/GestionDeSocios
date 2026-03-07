@@ -44,7 +44,8 @@
             </td>
             
             <td class="align-middle">
-              <span class="badge-status bg-success-subtle text-success">
+              <span class="badge-status" 
+                    [ngClass]="socio.estado.nombre === 'Adherente' ? 'status-adherente' : 'status-pendiente'">
                 {{ socio.estado.nombre || 'Estado ' + socio.estado.id }}
               </span>
             </td>

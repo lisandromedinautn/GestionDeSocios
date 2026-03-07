@@ -1,46 +1,71 @@
+/* PALETA ARTESANAL - FONDO ELEGIDO: #edc79b */
+
 :host {
   display: block;
-  background-color: #f8fcf9;
+  background-color: #edc79b; 
   min-height: 100vh;
+  width: 100%;
   font-family: 'Inter', sans-serif;
+  margin: 0;
   padding: 2rem 1rem;
+  box-sizing: border-box;
+  /* flow-root evita que los márgenes de los hijos "empujen" el fondo y dejen huecos blancos */
+  display: flow-root; 
+}
+
+/* SOLUCIÓN AL MARCO BLANCO: 
+   Forzamos al HTML y BODY a tomar el color y eliminar sus márgenes por defecto.
+*/
+::ng-deep html, 
+::ng-deep body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #edc79b !important;
 }
 
 .view-card {
   background: white;
   border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  /* Sombra con un toque del morado artesanal para dar profundidad */
+  box-shadow: 0 15px 35px rgba(113, 62, 90, 0.15); 
+  border: 1px solid rgba(113, 62, 90, 0.1);
   max-width: 1000px;
   margin: 0 auto;
   overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .view-header {
   padding: 2rem 2.5rem;
-  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  background: #713e5a; /* Morado Artesanal */
   color: white;
   position: relative;
 }
 
+/* Textura de grano sutil */
 .view-header::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-  opacity: 0.3;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.08)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.04)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.4;
+  pointer-events: none;
 }
 
-.view-content { padding: 2.5rem 2.5rem 3rem; }
+.view-content { 
+  padding: 2.5rem 2.5rem 3rem; 
+}
 
 .section-title-sm {
   font-size: 0.8rem;
-  font-weight: 700;
-  color: #4b5563;
+  font-weight: 800;
+  color: #713e5a;
   text-transform: uppercase;
   margin-bottom: 1.25rem;
-  border-left: 4px solid #3b82f6;
+  border-left: 4px solid #63a375; /* Verde Artesanal */
   padding-left: 12px;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
 }
 
 .data-row {
@@ -48,54 +73,61 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-  border-bottom: 1px solid #293958;
+  border-bottom: 1px solid #f7f0e8;
   font-size: 0.95rem;
 }
 
-.data-row:last-child { border-bottom: none; }
-.data-row span { color: #6b7280; font-weight: 500; }
+.data-row:last-child { 
+  border-bottom: none; 
+}
 
-.text-primary { color: #3b82f6; }
-.text-status-1 { color: #10b981; }
+.data-row span { 
+  color: #d57a66; /* Terracotta */
+  font-weight: 600; 
+}
 
-.fw-black { font-weight: 900; }
-.line-height-1 { line-height: 1; }
+/* --- BOTONES --- */
 
 .btn-back-modern, .btn-edit-modern {
   border-radius: 12px;
-  padding: 1rem 2rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
+  padding: 0.8rem 2rem;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
+  cursor: pointer;
 }
 
 .btn-back-modern {
-  background: #f1f5f9;
-  border: 2px solid #e2e8f0;
-  color: #64748b;
+  background: #ffffff;
+  border: 2px solid #edc79b;
+  color: #713e5a;
 }
 
 .btn-back-modern:hover {
-  background: #e2e8f0;
+  background: #fdfaf5;
   transform: translateX(-4px);
 }
 
 .btn-edit-modern {
-  background: #3b82f6;
+  background: #713e5a;
   border: none;
   color: white;
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 4px 14px rgba(113, 62, 90, 0.2);
 }
 
 .btn-edit-modern:hover {
-  background: #2563eb;
+  background: #63a375; /* Cambio a verde en acción positiva */
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 6px 20px rgba(99, 163, 117, 0.3);
 }
 
-.fade-in { animation: fadeIn 0.5s ease-in-out; }
+/* Animaciones */
+.fade-in { 
+  animation: fadeIn 0.5s ease-in-out; 
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -103,8 +135,6 @@
 
 @media (max-width: 768px) {
   .view-header, .view-content { padding-left: 1.5rem; padding-right: 1.5rem; }
-  .data-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-  .data-row .text-end { text-align: left !important; }
-  .mt-5.d-flex { flex-direction: column; width: 100%; }
+  .data-row { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
   .btn-back-modern, .btn-edit-modern { width: 100%; justify-content: center; }
 }
