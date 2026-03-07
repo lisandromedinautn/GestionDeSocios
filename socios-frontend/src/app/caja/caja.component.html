@@ -1,0 +1,50 @@
+<div class="container-fluid form-main-container">
+  <div class="layout-wrapper fade-in">
+    
+    <div class="form-card-custom">
+      <div class="form-header-custom">
+        <div class="icon-badge">📦</div>
+        <h2 class="m-0">Nueva Caja de Sistema</h2>
+        <p class="text-muted small">Configura un nuevo punto de gestión de ingresos/egresos</p>
+      </div>
+
+      <div class="form-content-custom">
+        <div class="form-group mb-4">
+          <label class="form-label">Nombre de la Caja</label>
+          <input 
+            type="text" 
+            [(ngModel)]="nuevaCaja.nombre" 
+            name="nombre"
+            class="form-input-custom" 
+            placeholder="Ej: Caja Chica, Cobros Mensuales..."
+            required
+          >
+        </div>
+
+        <div class="form-group mb-2">
+          <label class="form-label">Descripción (Opcional)</label>
+          <textarea 
+            [(ngModel)]="nuevaCaja.descripcion" 
+            name="descripcion"
+            class="form-input-custom" 
+            rows="3"
+            placeholder="¿Para qué se utilizará esta caja?"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-footer-custom">
+        <button (click)="cancelar()" class="btn-cancel-custom">
+          Cancelar
+        </button>
+        <button 
+          (click)="guardar()" 
+          class="btn-save-custom" 
+          [disabled]="!nuevaCaja.nombre">
+          Guardar Caja
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

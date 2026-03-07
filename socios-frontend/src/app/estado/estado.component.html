@@ -1,0 +1,50 @@
+<div class="container-fluid form-main-container">
+  <div class="layout-wrapper fade-in">
+    
+    <div class="form-card-custom">
+      <div class="form-header-custom">
+        <div class="icon-badge">🏷️</div>
+        <h2 class="m-0">Nuevo Estado de Socio</h2>
+        <p class="text-muted small">Define una nueva situación administrativa para los miembros</p>
+      </div>
+
+      <div class="form-content-custom">
+        <div class="form-group mb-4">
+          <label class="form-label">Nombre del Estado</label>
+          <input 
+            type="text" 
+            [(ngModel)]="nuevoEstado.nombre" 
+            name="nombre"
+            class="form-input-custom" 
+            placeholder="Ej: Activo, Moroso, Vitalicio..."
+            required
+          >
+        </div>
+
+        <div class="form-group mb-2">
+          <label class="form-label">Descripción del Estado</label>
+          <textarea 
+            [(ngModel)]="nuevoEstado.descripcion" 
+            name="descripcion"
+            class="form-input-custom" 
+            rows="3"
+            placeholder="¿Qué implica este estado para el socio?"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-footer-custom">
+        <button (click)="cancelar()" class="btn-cancel-custom">
+          Cancelar
+        </button>
+        <button 
+          (click)="guardar()" 
+          class="btn-save-custom" 
+          [disabled]="!nuevoEstado.nombre">
+          Guardar Estado
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

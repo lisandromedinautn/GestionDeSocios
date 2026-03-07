@@ -30,6 +30,10 @@ export class SocioComponent implements OnInit {
     this.router.navigate(['/socios/crear']);
   }
 
+  irAAdmin(): void {
+    this.router.navigate(['/admin']);
+  }
+
   cargarSocios = (): void => {
     this.socioService.getSocios().subscribe({
       next: (data: Socio[]) => (this.socios = data),

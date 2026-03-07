@@ -1,14 +1,18 @@
 <div class="container mt-4">
   <div class="text-center mb-4">
-    <h2 class="fw-bold text-dark" style="font-size: 1.6rem;">Panel de Control de Socios</h2>
+    <h2 class="fw-bold text-dark" style="font-size: 1.8rem;">Panel de Control de Socios</h2>
   </div>
 
   <div class="layout-wrapper fade-in">
     
     <div class="header-toolbar">
-      <h4 class="m-0 text-secondary" style="font-size: 1.1rem;">Listado de Socios</h4>
+      <h4 class="m-0 text-secondary" style="font-size: 1.25rem;">Listado de Socios</h4>
 
       <div class="actions-container">
+        <button (click)="irAAdmin()" class="btn-admin" title="Administración">
+          <span class="admin-icon">⚙️</span> Admin
+        </button>
+
         <button (click)="irACrearSocio()" class="btn-create">
           <span class="plus-icon">+</span> Nuevo Socio
         </button>

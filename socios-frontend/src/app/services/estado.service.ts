@@ -16,4 +16,8 @@ export class EstadoService {
   create(estado: any): Observable<any> {
     return this.http.post<any>(this.API_URL, estado);
   }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.API_URL}/${id}`);
+  }
 }

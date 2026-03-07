@@ -15,4 +15,8 @@ export class CajaService {
   create(caja: any): Observable<any> {
     return this.http.post<any>(this.API_URL, caja);
   }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.API_URL}/${id}`);
+  }
 }

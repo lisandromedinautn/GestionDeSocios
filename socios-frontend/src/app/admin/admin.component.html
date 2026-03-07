@@ -1,0 +1,88 @@
+<div class="container-fluid admin-main-container">
+  
+  <div class="admin-header-top mb-5">
+    <div class="header-side">
+      <button (click)="irASocios()" class="btn-cancel-custom btn-back-top">
+        🔙 Volver
+      </button>
+    </div>
+    
+    <div class="header-center">
+      <h2 class="fw-bold text-dark m-0">Administración del Sistema</h2>
+    </div>
+    
+    <div class="header-side"></div>
+  </div>
+
+  <div class="layout-wrapper fade-in">
+    <div class="admin-grid">
+      
+      <div class="admin-section">
+        <div class="form-card-admin">
+          <div class="form-header-admin">
+            <h4 class="m-0">Cajas Disponibles</h4>
+          </div>
+          
+          <div class="form-content-admin">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th>Nombre de Caja</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let caja of cajas">
+                  <td><span class="main-text">{{ caja.nombre }}</span></td>
+                  <td class="text-center">
+                    <button (click)="eliminarCaja(caja.id)" class="btn-remove-custom">🗑️</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="form-footer-admin">
+            <button (click)="irACrearCaja()" class="btn-add-custom-admin">
+              <span class="icon">+</span> Nueva Caja
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="admin-section">
+        <div class="form-card-admin">
+          <div class="form-header-admin">
+            <h4 class="m-0">Estados de Socios</h4>
+          </div>
+          
+          <div class="form-content-admin">
+            <table class="table-custom">
+              <thead>
+                <tr>
+                  <th>Nombre del Estado</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let estado of estados">
+                  <td><span class="main-text">{{ estado.nombre }}</span></td>
+                  <td class="text-center">
+                    <button (click)="eliminarEstado(estado.id)" class="btn-remove-custom">🗑️</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="form-footer-admin">
+            <button (click)="irACrearEstado()" class="btn-add-custom-admin btn-terracotta">
+              <span class="icon">+</span> Nuevo Estado
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
