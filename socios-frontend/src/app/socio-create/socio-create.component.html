@@ -107,7 +107,7 @@
         <div formArrayName="telefonos">
           <div *ngFor="let tel of telefonos.controls; let i=index" [formGroupName]="i" class="row g-2 mb-2">
             <div class="col-md-10">
-              <input type="text" formControlName="numero" class="form-control" placeholder="Número de contacto">
+              <input type="number" formControlName="numero" class="form-control" placeholder="Número de contacto">
             </div>
             <div class="col-md-2" *ngIf="telefonos.length > 1">
               <button type="button" class="btn btn-remove-custom w-100" (click)="removerTelefono(i)">✕</button>

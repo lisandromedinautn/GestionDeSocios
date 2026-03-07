@@ -10,7 +10,7 @@ export interface Direccion {
 
 export interface Telefono {
   id?: number;
-  numero: string;
+  numero: number;
 }
 
 export interface Caja {

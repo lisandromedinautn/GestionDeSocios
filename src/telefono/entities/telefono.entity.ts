@@ -6,5 +6,5 @@ export class Telefono {
   id!: number;
 
   @Column()
-  numero!: string;
+  numero!: number;
 }

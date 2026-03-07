@@ -8,6 +8,10 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs'; // Importante para peticiones paralelas
+import { SocioService } from '../services/socio.service';
+import { CajaService } from '../services/caja.service';
+import { EstadoService } from '../services/estado.service';
 
 @Component({
   selector: 'app-socio-edit',
@@ -18,43 +22,70 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class SocioEditComponent implements OnInit {
   socioForm!: FormGroup;
-  cargandoData = false;
+  cargandoData = true;
   esEdicion = false;
   socioId?: number;
 
-  // Listas para selects (reemplazar con datos de servicios)
-  cajas = [
-    { id: 1, nombre: 'Caja Médica' },
-    { id: 2, nombre: 'Caja Previsión' },
-  ];
-  estados = [
-    { id: 1, nombre: 'Activo' },
-    { id: 2, nombre: 'Inactivo' },
-  ];
+  // Listas dinámicas desde servicios
+  cajas: any[] = [];
+  estados: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private socioService: SocioService,
+    private cajaService: CajaService,
+    private estadoService: EstadoService
   ) {
     this.createForm();
   }
 
   ngOnInit(): void {
     this.socioId = this.route.snapshot.params['id'];
+    this.cargarTodo();
+  }
+
+  private cargarTodo(): void {
+    this.cargandoData = true;
+
+    // Preparamos las peticiones base
+    const peticiones: any = {
+      cajas: this.cajaService.findAll(),
+      estados: this.estadoService.findAll()
+    };
+
+    // Si hay ID, añadimos la petición del socio
     if (this.socioId) {
       this.esEdicion = true;
-      this.cargarDatosSocio(this.socioId);
+      peticiones.socio = this.socioService.getSocio(this.socioId);
     }
+
+    forkJoin(peticiones).subscribe({
+      next: (res: any) => {
+        this.cajas = res.cajas;
+        this.estados = res.estados;
+
+        if (this.esEdicion && res.socio) {
+          this.poblarFormulario(res.socio);
+        }
+        
+        this.cargandoData = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar datos:', err);
+        this.cargandoData = false;
+      }
+    });
   }
 
   createForm() {
     this.socioForm = this.fb.group({
-      nombre: ['', Validators.required],
-      apellido: ['', Validators.required],
+      nombre: ['', [Validators.required, Validators.minLength(2)]],
+      apellido: ['', [Validators.required, Validators.minLength(2)]],
       dni: [null, [Validators.required, Validators.pattern('^[0-9]*$')]],
       numeroSocio: [null, Validators.required],
-      numeroBeneficio: [null],
+      numeroBeneficio: [null, Validators.required],
       correoElectronico: ['', [Validators.required, Validators.email]],
       fechaNacimiento: ['', Validators.required],
       fechaIngreso: ['', Validators.required],
@@ -76,32 +107,53 @@ export class SocioEditComponent implements OnInit {
     return this.socioForm.get('telefonos') as FormArray;
   }
 
-  agregarTelefono(numero: string = '') {
+  // Corregido a number según tu requerimiento anterior
+  agregarTelefono(numero: number | string = '') {
     this.telefonos.push(
       this.fb.group({
-        numero: [numero, Validators.required],
-      }),
+        numero: [numero, [Validators.required, Validators.pattern('^[0-9]*$')]],
+      })
     );
   }
 
   removerTelefono(i: number) {
-    this.telefonos.removeAt(i);
+    if (this.telefonos.length > 0) {
+      this.telefonos.removeAt(i);
+    }
   }
 
-  cargarDatosSocio(id: number) {
-    this.cargandoData = true;
-    // Simulación de llamada a API
-    // this.socioService.getSocio(id).subscribe(socio => {
-    //    this.socioForm.patchValue(socio);
-    //    socio.telefonos.forEach(t => this.agregarTelefono(t.numero));
-    //    this.cargandoData = false;
-    // });
+  private poblarFormulario(socio: any) {
+    // Seteamos valores básicos y anidados
+    this.socioForm.patchValue(socio);
+
+    // Limpiar y llenar el FormArray de teléfonos
+    this.telefonos.clear();
+    if (socio.telefonos && socio.telefonos.length > 0) {
+      socio.telefonos.forEach((t: any) => this.agregarTelefono(t.numero));
+    } else {
+      // Si no tiene teléfonos, al menos dejamos uno vacío como en el crear
+      this.agregarTelefono();
+    }
   }
 
   onSubmit() {
-    if (this.socioForm.valid) {
-      console.log('Actualizando socio:', this.socioForm.value);
-      // Lógica para PUT/PATCH
+    if (this.socioForm.invalid) {
+      this.socioForm.markAllAsTouched();
+      return;
+    }
+
+    const datosSocio = this.socioForm.value;
+
+    if (this.esEdicion && this.socioId) {
+      this.socioService.updateSocio(this.socioId, datosSocio).subscribe({
+        next: () => this.router.navigate(['/socios']),
+        error: (err) => console.error('Error al actualizar', err),
+      });
+    } else {
+      this.socioService.createSocio(datosSocio).subscribe({
+        next: () => this.router.navigate(['/socios']),
+        error: (err) => console.error('Error al crear', err),
+      });
     }
   }
 
