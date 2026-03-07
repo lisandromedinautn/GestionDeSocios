@@ -45,6 +45,7 @@ export class CreateSocioDto {
   fechaNacimiento!: string;
 
   // Validamos que la dirección sea un objeto que cumpla con su propio DTO
+  @IsOptional()
   @IsObject()
   @ValidateNested()
   @Type(() => CreateDireccionDto)
