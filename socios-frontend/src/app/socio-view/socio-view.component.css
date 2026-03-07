@@ -1,0 +1,95 @@
+:host {
+  display: block;
+  background-color: #f8fafc;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+  padding: 2rem 1rem;
+}
+
+.view-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  max-width: 1000px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.view-header {
+  padding: 2rem 2.5rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  color: white;
+  position: relative;
+}
+
+.view-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.05)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.3;
+}
+
+.view-content { padding: 2.5rem 2.5rem 3rem; }
+
+.section-title-sm {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #4b5563;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  border-left: 4px solid #3b82f6;
+  padding-left: 12px;
+  letter-spacing: 0.3px;
+}
+
+.data-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #f3f4f6;
+  font-size: 0.95rem;
+}
+
+.data-row:last-child { border-bottom: none; }
+.data-row span { color: #6b7280; font-weight: 500; }
+
+.text-primary { color: #3b82f6; }
+.text-status-1 { color: #10b981; } /* Ajustar IDs de estado según necesites */
+
+.fw-black { font-weight: 900; }
+.line-height-1 { line-height: 1; }
+
+.btn-back-modern {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  border: 2px solid #e2e8f0;
+  color: #6b7280;
+  font-weight: 600;
+  border-radius: 12px;
+  padding: 1rem 2.5rem;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-back-modern:hover {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border-color: #3b82f6;
+  color: white;
+  transform: translateX(-4px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+}
+
+.fade-in { animation: fadeIn 0.5s ease-in-out; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .view-header, .view-content { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .data-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+  .data-row .text-end { text-align: left !important; }
+}

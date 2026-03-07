@@ -2,6 +2,8 @@ export interface Direccion {
   id?: number;
   calle: string;
   numero: string;
+  piso?: string; // <--- Agregar este
+  departamento?: string; // <--- Agregar este
   barrio: string;
   ciudad: string;
 }

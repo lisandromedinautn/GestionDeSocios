@@ -57,7 +57,7 @@ export class SocioComponent implements OnInit {
     }
   };
 
-  editarSocio(socio: Socio) {
-    console.log('Editar socio:', socio);
+  consultarSocio(socio: Socio) {
+    this.router.navigate(['/socios/ver', socio.id]);
   }
 }

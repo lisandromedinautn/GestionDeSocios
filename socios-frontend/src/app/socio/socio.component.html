@@ -6,7 +6,7 @@
   <div class="layout-wrapper fade-in">
     
     <div class="header-toolbar">
-      <h4 class="m-0 text-secondary" style="font-size: 1.1rem;">Listado Maestro</h4>
+      <h4 class="m-0 text-secondary" style="font-size: 1.1rem;">Listado de Socios</h4>
 
       <div class="actions-container">
         <button (click)="irACrearSocio()" class="btn-create">
@@ -28,46 +28,28 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>DNI</th>
-            <th>Socio / Beneficio</th>
-            <th>Categorización</th>
-            <th>Fechas Registro</th>
-            <th>Ubicación</th>
-            <th>Contacto</th>
+            <th>Socio / Identificación</th>
+            <th>Estado</th>
+            <th>Información de Contacto</th>
             <th class="text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let socio of sociosFiltrados">
-            <td class="fw-bold" style="color: #1e293b;">{{ socio.dni }}</td>
             <td>
               <div class="data-group">
                 <span class="main-text">{{ socio.apellido | uppercase }}, {{ socio.nombre }}</span>
-                <span class="sub-text">Socio: {{ socio.numeroSocio }}</span>
+                <span class="sub-text">Socio N°: {{ socio.numeroSocio }}</span>
+                <span class="sub-text text-muted" style="font-size: 0.75rem;">DNI: {{ socio.dni }}</span>
               </div>
             </td>
-            <td>
-              <div class="d-flex flex-column gap-1">
-                <span class="badge-status bg-primary-subtle text-primary">
-                  {{ socio.caja.nombre || 'Caja ' + socio.caja.id }}
-                </span>
-                <span class="badge-status bg-success-subtle text-success">
-                  {{ socio.estado.nombre || 'Estado ' + socio.estado.id }}
-                </span>
-              </div>
+            
+            <td class="align-middle">
+              <span class="badge-status bg-success-subtle text-success">
+                {{ socio.estado.nombre || 'Estado ' + socio.estado.id }}
+              </span>
             </td>
-            <td>
-              <div class="data-group">
-                <span class="sub-text">Alta: <b>{{ socio.fechaIngreso | date:'dd/MM/yyyy' }}</b></span>
-                <span class="sub-text">Nac: <b>{{ socio.fechaNacimiento | date:'dd/MM/yyyy' }}</b></span>
-              </div>
-            </td>
-            <td>
-              <div class="data-group" *ngIf="socio.direccion">
-                <span class="main-text">{{ socio.direccion.ciudad }}</span>
-                <span class="sub-text">{{ socio.direccion.calle }} {{ socio.direccion.numero }}</span>
-              </div>
-            </td>
+
             <td>
               <div class="data-group">
                 <span class="sub-text text-primary fw-medium">{{ socio.correoElectronico }}</span>
@@ -78,9 +60,10 @@
                 </div>
               </div>
             </td>
-            <td>
+
+            <td class="align-middle">
               <div class="d-flex gap-2 justify-content-center">
-                <button (click)="editarSocio(socio)" class="btn-icon" title="Editar">📝</button>
+                <button (click)="consultarSocio(socio)" class="btn-icon" title="Ver detalle">👁️</button>
                 <button (click)="eliminarSocio(socio.id)" class="btn-icon btn-danger-soft" title="Eliminar">🗑️</button>
               </div>
             </td>
