@@ -1,14 +1,18 @@
 <div class="container mt-4">
   <div class="text-center mb-4">
-    <h2 class="fw-bold text-dark">Panel de Control de Socios</h2>
+    <h2 class="fw-bold text-dark" style="font-size: 1.6rem;">Panel de Control de Socios</h2>
   </div>
 
   <div class="layout-wrapper fade-in">
     
     <div class="header-toolbar">
-      <h4 class="m-0 text-secondary" style="font-size: 1.3rem;">Listado Maestro</h4>
+      <h4 class="m-0 text-secondary" style="font-size: 1.1rem;">Listado Maestro</h4>
 
-      <div class="d-flex flex-column align-items-end">
+      <div class="actions-container">
+        <button (click)="irACrearSocio()" class="btn-create">
+          <span class="plus-icon">+</span> Nuevo Socio
+        </button>
+
         <div class="search-box">
           <span class="search-icon">🔍</span>
           <input 
@@ -17,9 +21,6 @@
             placeholder="Buscar por nombre o DNI..."
             class="form-control-custom">
         </div>
-        <small class="text-primary fw-bold mt-1" style="font-size: 0.9rem;" *ngIf="searchTerm">
-          {{ sociosFiltrados.length }} encontrados
-        </small>
       </div>
     </div>
 
@@ -33,7 +34,7 @@
             <th>Fechas Registro</th>
             <th>Ubicación</th>
             <th>Contacto</th>
-            <th>Acciones</th>
+            <th class="text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -42,11 +43,11 @@
             <td>
               <div class="data-group">
                 <span class="main-text">{{ socio.apellido | uppercase }}, {{ socio.nombre }}</span>
-                <span class="sub-text">ID: {{ socio.numeroSocio }}</span>
+                <span class="sub-text">Socio: {{ socio.numeroSocio }}</span>
               </div>
             </td>
             <td>
-              <div class="d-flex flex-column gap-2 align-items-center">
+              <div class="d-flex flex-column gap-1">
                 <span class="badge-status bg-primary-subtle text-primary">
                   {{ socio.caja.nombre || 'Caja ' + socio.caja.id }}
                 </span>
@@ -82,12 +83,6 @@
                 <button (click)="editarSocio(socio)" class="btn-icon" title="Editar">📝</button>
                 <button (click)="eliminarSocio(socio.id)" class="btn-icon btn-danger-soft" title="Eliminar">🗑️</button>
               </div>
-            </td>
-          </tr>
-
-          <tr *ngIf="sociosFiltrados.length === 0">
-            <td colspan="7" class="py-5 text-center text-muted" style="font-size: 1.1rem;">
-              No se encontraron resultados para la búsqueda.
             </td>
           </tr>
         </tbody>

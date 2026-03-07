@@ -34,12 +34,12 @@
   margin-bottom: 1rem;
   border-bottom: 1px solid var(--border-color);
   width: 100%;
-  box-sizing: border-box;
+  gap: 20px; /* Espacio mínimo entre el título y las acciones */
 }
 
 .search-box {
   position: relative;
-  width: 260px; /* Reducido de 300px para evitar desbordes */
+  width: 260px;
 }
 
 .search-icon {
@@ -53,12 +53,13 @@
 
 .form-control-custom {
   width: 100%;
-  padding: 8px 10px 8px 35px;
+  height: 38px; /* Altura igualada al botón */
+  padding: 0 10px 0 35px;
   border-radius: 8px;
   border: 1px solid var(--border-color);
-  font-size: 0.95rem; 
+  font-size: 0.95rem;
   outline: none;
-  box-sizing: border-box; /* Fundamental para que el padding no sume ancho */
+  box-sizing: border-box;
 }
 
 /* --- TABLA Y CARD --- */
@@ -141,6 +142,38 @@
   color: #334155;
   border: 1px solid #e2e8f0;
 }
+/* --- BOTÓN CREAR --- */
+.btn-create {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  height: 38px; /* Altura igualada al buscador */
+  white-space: nowrap;
+}
+
+.btn-create:hover {
+  background-color: #4338ca; /* Un tono más oscuro */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.3);
+}
+
+.btn-create:active {
+  transform: translateY(0);
+}
+
+.plus-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
 
 /* --- ACCIONES --- */
 .btn-icon {
@@ -154,6 +187,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+}
+
+.actions-container {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Espacio entre el botón y el buscador */
 }
 
 .btn-icon:hover {
