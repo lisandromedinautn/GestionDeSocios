@@ -1,117 +1,125 @@
-<div class="container mt-5 mb-5">
+<div class="container mt-4 mb-5">
   <div class="form-card fade-in">
     <div class="form-header">
       <h2 class="m-0">Registrar Nuevo Socio</h2>
-      <p class="text-muted">Complete la ficha del socio.</p>
+      <p class="text-muted mb-0">Complete la ficha del socio.</p>
     </div>
 
     <form [formGroup]="socioForm" (ngSubmit)="onSubmit()" class="form-content">
       
-      <h5 class="section-title">Datos Personales</h5>
-      <div class="row g-3 mb-4">
-        <div class="col-md-4">
-          <label class="form-label">Nombre</label>
-          <input type="text" formControlName="nombre" class="form-control">
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Apellido</label>
-          <input type="text" formControlName="apellido" class="form-control">
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">DNI</label>
-          <input type="number" formControlName="dni" class="form-control">
-        </div>
-      </div>
-
-      <div class="row g-3 mb-4">
-        <div class="col-md-4">
-          <label class="form-label">N° Socio</label>
-          <input type="number" formControlName="numeroSocio" class="form-control">
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">N° Beneficio</label>
-          <input type="text" formControlName="numeroBeneficio" class="form-control">
-        </div>
-        <div class="col-md-4">
-          <label class="form-label">Correo Electrónico</label>
-          <input type="email" formControlName="correoElectronico" class="form-control">
-        </div>
-      </div>
-
-      <div class="row g-3 mb-4">
-        <div class="col-md-6">
-          <label class="form-label">Fecha de Nacimiento</label>
-          <input type="date" formControlName="fechaNacimiento" class="form-control">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Fecha de Ingreso</label>
-          <input type="date" formControlName="fechaIngreso" class="form-control">
-        </div>
-      </div>
-
-      <h5 class="section-title">Categorización</h5>
-      <div class="row g-3 mb-4">
-        <div class="col-md-6" formGroupName="caja">
-          <label class="form-label">Asignar Caja</label>
-          <select formControlName="id" class="form-select custom-select">
-            <option [ngValue]="null" disabled>{{ cargandoData ? 'Cargando...' : 'Seleccione una caja...' }}</option>
-            <option *ngFor="let c of cajas" [ngValue]="c.id">{{c.nombre}}</option>
-          </select>
-        </div>
-        <div class="col-md-6" formGroupName="estado">
-          <label class="form-label">Estado Inicial</label>
-          <select formControlName="id" class="form-select custom-select">
-            <option [ngValue]="null" disabled>{{ cargandoData ? 'Cargando...' : 'Seleccione un estado...' }}</option>
-            <option *ngFor="let e of estados" [ngValue]="e.id">{{e.nombre}}</option>
-          </select>
-        </div>
-      </div>
-
-      <h5 class="section-title">Ubicación</h5>
-      <div formGroupName="direccion" class="row g-3 mb-4">
-        <div class="col-md-4">
-          <label class="form-label">Calle</label>
-          <input type="text" formControlName="calle" class="form-control">
-        </div>
-        <div class="col-md-2">
-          <label class="form-label">Número</label>
-          <input type="text" formControlName="numero" class="form-control">
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Piso (Opcional)</label>
-          <input type="text" formControlName="piso" class="form-control">
-        </div>
-        <div class="col-md-3">
-          <label class="form-label">Depto (Opcional)</label>
-          <input type="text" formControlName="departamento" class="form-control">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Barrio</label>
-          <input type="text" formControlName="barrio" class="form-control">
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Ciudad</label>
-          <input type="text" formControlName="ciudad" class="form-control">
-        </div>
-      </div>
-
-      <h5 class="section-title d-flex justify-content-between align-items-center">
-        Teléfonos
-        <button type="button" class="btn btn-sm btn-outline-primary" (click)="agregarTelefono()">+ Añadir</button>
-      </h5>
-      <div formArrayName="telefonos">
-        <div *ngFor="let tel of telefonos.controls; let i=index" [formGroupName]="i" class="row g-2 mb-2">
-          <div class="col-md-10">
-            <input type="text" formControlName="numero" class="form-control" placeholder="Número de contacto">
+      <section class="form-section first-section">
+        <h5 class="section-title">Datos Personales</h5>
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Nombre</label>
+            <input type="text" formControlName="nombre" class="form-control" placeholder="Ej: Juan">
           </div>
-          <div class="col-md-2" *ngIf="telefonos.length > 1">
-            <button type="button" class="btn btn-outline-danger w-100" (click)="removerTelefono(i)">✕</button>
+          <div class="col-md-4">
+            <label class="form-label">Apellido</label>
+            <input type="text" formControlName="apellido" class="form-control" placeholder="Ej: Pérez">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">DNI</label>
+            <input type="number" formControlName="dni" class="form-control" placeholder="Sin puntos">
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">N° Socio</label>
+            <input type="number" formControlName="numeroSocio" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">N° Beneficio</label>
+            <input type="number" formControlName="numeroBeneficio" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Correo Electrónico</label>
+            <input type="email" formControlName="correoElectronico" class="form-control" placeholder="usuario@gmail.com">
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Fecha de Nacimiento</label>
+            <input type="date" formControlName="fechaNacimiento" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Fecha de Ingreso</label>
+            <input type="date" formControlName="fechaIngreso" class="form-control">
           </div>
         </div>
-      </div>
+      </section>
 
-      <div class="d-flex justify-content-end gap-3 mt-5">
-        <button type="button" class="btn btn-light" (click)="cancelar()">Cancelar</button>
+      <section class="form-section">
+        <h5 class="section-title">Categorización</h5>
+        <div class="row g-3">
+          <div class="col-md-6" formGroupName="caja">
+            <label class="form-label">Asignar Caja</label>
+            <select formControlName="id" class="form-select custom-select">
+              <option [ngValue]="null" disabled>{{ cargandoData ? 'Cargando...' : 'Seleccione una caja...' }}</option>
+              <option *ngFor="let c of cajas" [ngValue]="c.id">{{c.nombre}}</option>
+            </select>
+          </div>
+          <div class="col-md-6" formGroupName="estado">
+            <label class="form-label">Estado Inicial</label>
+            <select formControlName="id" class="form-select custom-select">
+              <option [ngValue]="null" disabled>{{ cargandoData ? 'Cargando...' : 'Seleccione un estado...' }}</option>
+              <option *ngFor="let e of estados" [ngValue]="e.id">{{e.nombre}}</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h5 class="section-title">Ubicación</h5>
+        <div formGroupName="direccion" class="row g-3">
+          <div class="col-md-8">
+            <label class="form-label">Calle</label>
+            <input type="text" formControlName="calle" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Número</label>
+            <input type="text" formControlName="numero" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Piso (Opcional)</label>
+            <input type="text" formControlName="piso" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Depto (Opcional)</label>
+            <input type="text" formControlName="departamento" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Barrio</label>
+            <input type="text" formControlName="barrio" class="form-control">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Ciudad</label>
+            <input type="text" formControlName="ciudad" class="form-control">
+          </div>
+        </div>
+      </section>
+
+      <section class="form-section">
+        <h5 class="section-title d-flex justify-content-between align-items-center">
+          Teléfonos
+          <button type="button" class="btn-add-custom" (click)="agregarTelefono()">
+            + Añadir Teléfono
+          </button>
+        </h5>
+        <div formArrayName="telefonos">
+          <div *ngFor="let tel of telefonos.controls; let i=index" [formGroupName]="i" class="row g-2 mb-2">
+            <div class="col-md-10">
+              <input type="text" formControlName="numero" class="form-control" placeholder="Número de contacto">
+            </div>
+            <div class="col-md-2" *ngIf="telefonos.length > 1">
+              <button type="button" class="btn btn-remove-custom w-100" (click)="removerTelefono(i)">✕</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="form-footer d-flex justify-content-end gap-3">
+        <button type="button" class="btn-cancel-custom" (click)="cancelar()">
+          Cancelar
+        </button>
         <button type="submit" class="btn btn-primary-custom" [disabled]="socioForm.invalid || cargandoData">
           Guardar Socio
         </button>

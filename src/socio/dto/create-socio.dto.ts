@@ -27,7 +27,7 @@ export class CreateSocioDto {
 
   @IsString()
   @IsNotEmpty()
-  numeroBeneficio!: string;
+  numeroBeneficio!: number;
 
   @IsNumber()
   numeroSocio!: number;

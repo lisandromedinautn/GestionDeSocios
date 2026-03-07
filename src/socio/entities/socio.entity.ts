@@ -27,7 +27,7 @@ export class Socio {
   dni!: number;
 
   @Column()
-  numeroBeneficio!: string;
+  numeroBeneficio!: number;
 
   @Column({ unique: true })
   numeroSocio!: number;

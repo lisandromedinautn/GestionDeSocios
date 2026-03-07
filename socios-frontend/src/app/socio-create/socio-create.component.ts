@@ -64,7 +64,7 @@ export class SocioCreateComponent implements OnInit {
       nombre: ['', [Validators.required, Validators.minLength(2)]],
       apellido: ['', [Validators.required, Validators.minLength(2)]],
       dni: [null, [Validators.required, Validators.pattern('^[0-9]*$')]],
-      numeroBeneficio: ['', Validators.required],
+      numeroBeneficio: [null, Validators.required],
       numeroSocio: [null, Validators.required],
       correoElectronico: ['', [Validators.required, Validators.email]],
       fechaIngreso: [

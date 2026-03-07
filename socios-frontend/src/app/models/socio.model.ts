@@ -26,7 +26,7 @@ export interface Socio {
   nombre: string;
   apellido: string;
   dni: number;
-  numeroBeneficio: string;
+  numeroBeneficio: number;
   numeroSocio: number;
   correoElectronico: string;
   fechaIngreso: string | Date;
