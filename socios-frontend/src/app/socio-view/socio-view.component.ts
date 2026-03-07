@@ -9,7 +9,7 @@ import { Socio } from '../models/socio.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './socio-view.component.html',
-  styleUrl: './socio-view.component.css'
+  styleUrl: './socio-view.component.css',
 })
 export class SocioViewComponent implements OnInit {
   socio?: Socio;
@@ -18,7 +18,7 @@ export class SocioViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private socioService: SocioService
+    private socioService: SocioService,
   ) {}
 
   ngOnInit(): void {
@@ -29,12 +29,16 @@ export class SocioViewComponent implements OnInit {
           this.socio = data;
           this.loading = false;
         },
-        error: () => this.router.navigate(['/socios'])
+        error: () => this.router.navigate(['/socios']),
       });
     }
   }
 
-  volver(): void {
+  irAEditar(id: number) {
+    this.router.navigate(['/socios/editar', id]);
+  }
+
+  volver() {
     this.router.navigate(['/socios']);
   }
 }
