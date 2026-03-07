@@ -5,8 +5,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const port = process.env.PORT ?? 3000;
-  await app.listen(port);
+
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -16,7 +15,14 @@ async function bootstrap() {
     }),
   );
 
-  app.enableCors();
+  app.enableCors({
+    origin: 'http://localhost:4200', // Permite solo tu frontend de Angular
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Accept, Authorization',
+    credentials: true,
+  });
+  const port = process.env.PORT ?? 3000;
+  await app.listen(port);
 
   // Esto te confirmará en consola que todo levantó bien
   Logger.log(

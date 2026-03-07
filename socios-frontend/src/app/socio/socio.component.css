@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:host {
+  font-family: 'Inter', sans-serif;
+  --primary: #4f46e5;
+  --primary-soft: #eef2ff;
+  --bg-soft: #f8fafc;
+  --border-color: #e2e8f0;
+  display: block;
+  background-color: var(--bg-soft);
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden; /* Adiós al scroll horizontal residual */
+}
+
+.container {
+  padding: 1.5rem; /* Reducido de 2rem */
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+.layout-wrapper {
+  width: fit-content; 
+  max-width: 95vw; /* Evita que se salga de la pantalla en monitores chicos */
+}
+
+/* --- TOOLBAR --- */
+.header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.search-box {
+  position: relative;
+  width: 260px; /* Reducido de 300px para evitar desbordes */
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 1rem;
+}
+
+.form-control-custom {
+  width: 100%;
+  padding: 8px 10px 8px 35px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-size: 0.95rem; 
+  outline: none;
+  box-sizing: border-box; /* Fundamental para que el padding no sume ancho */
+}
+
+/* --- TABLA Y CARD --- */
+.card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-color);
+  width: 100%;
+  overflow: hidden;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%; /* Ahora sí al 100% del wrapper fit-content */
+  margin: 0;
+}
+
+.table thead th {
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 0.85rem; 
+  text-transform: uppercase;
+  padding: 1rem 1.2rem; /* Más compacto */
+  border-bottom: 2px solid var(--border-color);
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: 0.8rem 1.2rem; /* Más compacto */
+  border-bottom: 1px solid var(--border-color);
+  white-space: nowrap;
+  font-size: 1rem; 
+}
+
+/* --- TEXTOS INTERNOS --- */
+.data-group { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 2px; 
+  text-align: left; 
+}
+
+.main-text { 
+  font-weight: 600; 
+  color: #1e293b; 
+  font-size: 1.05rem; 
+}
+
+.sub-text { 
+  color: #64748b; 
+  font-size: 0.9rem; 
+}
+
+/* --- BADGES Y TELÉFONOS --- */
+.badge-status {
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem; 
+  font-weight: 700;
+  display: inline-block;
+}
+
+.bg-primary-subtle { background-color: #e0e7ff; color: #4338ca; }
+.bg-success-subtle { background-color: #dcfce7; color: #15803d; }
+
+.phone-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 5px; /* Separación un poco más ajustada */
+  margin-top: 4px;
+}
+
+.phone-badge {
+  font-size: 0.85rem; 
+  background: #f1f5f9;
+  padding: 3px 8px;
+  border-radius: 5px;
+  width: fit-content;
+  color: #334155;
+  border: 1px solid #e2e8f0;
+}
+
+/* --- ACCIONES --- */
+.btn-icon {
+  width: 34px;
+  height: 34px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  background: white;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.btn-danger-soft { color: #ef4444; background: #fef2f2; border-color: #fecaca; }
+.btn-danger-soft:hover { background: #ef4444; color: white; }
+
+.fade-in { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

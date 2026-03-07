@@ -1,100 +1,97 @@
 <div class="container mt-4">
-  <div class="row">
-    <div class="col-md-5">
-      <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-          <h5 class="mb-0">Nuevo Socio</h5>
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-dark">Panel de Control de Socios</h2>
+  </div>
+
+  <div class="layout-wrapper fade-in">
+    
+    <div class="header-toolbar">
+      <h4 class="m-0 text-secondary" style="font-size: 1.3rem;">Listado Maestro</h4>
+
+      <div class="d-flex flex-column align-items-end">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            placeholder="Buscar por nombre o DNI..."
+            class="form-control-custom">
         </div>
-        <div class="card-body">
-          <form [formGroup]="socioForm" (ngSubmit)="onSubmit()">
-            
-            <div class="row mb-2">
-              <div class="col">
-                <label>Nombre</label>
-                <input type="text" formControlName="nombre" class="form-control form-control-sm">
-              </div>
-              <div class="col">
-                <label>Apellido</label>
-                <input type="text" formControlName="apellido" class="form-control form-control-sm">
-              </div>
-            </div>
-
-            <div class="row mb-2">
-              <div class="col">
-                <label>DNI</label>
-                <input type="number" formControlName="dni" class="form-control form-control-sm">
-              </div>
-              <div class="col">
-                <label>Email</label>
-                <input type="email" formControlName="correoElectronico" class="form-control form-control-sm">
-              </div>
-            </div>
-
-            <hr>
-            <h6>Dirección</h6>
-            <div formGroupName="direccion" class="row mb-2">
-              <div class="col-8">
-                <input type="text" formControlName="calle" placeholder="Calle" class="form-control form-control-sm">
-              </div>
-              <div class="col-4">
-                <input type="text" formControlName="numero" placeholder="N°" class="form-control form-control-sm">
-              </div>
-            </div>
-
-            <hr>
-            <div class="d-flex justify-content-between align-items-center mb-2">
-              <h6 class="mb-0">Teléfonos</h6>
-              <button type="button" class="btn btn-sm btn-outline-success" (click)="agregarTelefono()">+ Agregar</button>
-            </div>
-            
-            <div formArrayName="telefonos">
-              <div *ngFor="let tel of telefonos.controls; let i=index" [formGroupName]="i" class="input-group input-group-sm mb-2">
-                <input type="text" formControlName="numero" class="form-control" placeholder="Número">
-                <button type="button" class="btn btn-outline-danger" (click)="eliminarTelefono(i)">X</button>
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100 mt-3" [disabled]="socioForm.invalid">
-              Guardar Socio
-            </button>
-          </form>
-        </div>
+        <small class="text-primary fw-bold mt-1" style="font-size: 0.9rem;" *ngIf="searchTerm">
+          {{ sociosFiltrados.length }} encontrados
+        </small>
       </div>
     </div>
 
-    <div class="col-md-7">
-      <div class="card shadow-sm">
-        <div class="card-header bg-dark text-white">
-          <h5 class="mb-0">Listado de Socios</h5>
-        </div>
-        <div class="card-body p-0">
-          <table class="table table-hover mb-0">
-            <thead class="table-light">
-              <tr>
-                <th>DNI</th>
-                <th>Socio</th>
-                <th>Ciudad</th>
-                <th>Teléfonos</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let socio of socios">
-                <td>{{ socio.dni }}</td>
-                <td>{{ socio.apellido }}, {{ socio.nombre }}</td>
-                <td>{{ socio.direccion?.ciudad || 'N/A' }}</td>
-                <td>{{ socio.telefonos?.length || 0 }} nros</td>
-                <td>
-                  <button class="btn btn-sm btn-danger" (click)="eliminarSocio(socio.id)">🗑️</button>
-                </td>
-              </tr>
-              <tr *ngIf="socios.length === 0">
-                <td colspan="5" class="text-center text-muted py-3">No hay socios registrados.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+    <div class="card">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>DNI</th>
+            <th>Socio / Beneficio</th>
+            <th>Categorización</th>
+            <th>Fechas Registro</th>
+            <th>Ubicación</th>
+            <th>Contacto</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let socio of sociosFiltrados">
+            <td class="fw-bold" style="color: #1e293b;">{{ socio.dni }}</td>
+            <td>
+              <div class="data-group">
+                <span class="main-text">{{ socio.apellido | uppercase }}, {{ socio.nombre }}</span>
+                <span class="sub-text">ID: {{ socio.numeroSocio }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex flex-column gap-2 align-items-center">
+                <span class="badge-status bg-primary-subtle text-primary">
+                  {{ socio.caja.nombre || 'Caja ' + socio.caja.id }}
+                </span>
+                <span class="badge-status bg-success-subtle text-success">
+                  {{ socio.estado.nombre || 'Estado ' + socio.estado.id }}
+                </span>
+              </div>
+            </td>
+            <td>
+              <div class="data-group">
+                <span class="sub-text">Alta: <b>{{ socio.fechaIngreso | date:'dd/MM/yyyy' }}</b></span>
+                <span class="sub-text">Nac: <b>{{ socio.fechaNacimiento | date:'dd/MM/yyyy' }}</b></span>
+              </div>
+            </td>
+            <td>
+              <div class="data-group" *ngIf="socio.direccion">
+                <span class="main-text">{{ socio.direccion.ciudad }}</span>
+                <span class="sub-text">{{ socio.direccion.calle }} {{ socio.direccion.numero }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="data-group">
+                <span class="sub-text text-primary fw-medium">{{ socio.correoElectronico }}</span>
+                <div class="phone-list-container">
+                  <div *ngFor="let tel of socio.telefonos" class="phone-badge">
+                    <span>📞</span> {{ tel.numero }}
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex gap-2 justify-content-center">
+                <button (click)="editarSocio(socio)" class="btn-icon" title="Editar">📝</button>
+                <button (click)="eliminarSocio(socio.id)" class="btn-icon btn-danger-soft" title="Eliminar">🗑️</button>
+              </div>
+            </td>
+          </tr>
+
+          <tr *ngIf="sociosFiltrados.length === 0">
+            <td colspan="7" class="py-5 text-center text-muted" style="font-size: 1.1rem;">
+              No se encontraron resultados para la búsqueda.
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

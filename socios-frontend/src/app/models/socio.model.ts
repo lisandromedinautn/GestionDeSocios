@@ -1,4 +1,5 @@
 export interface Direccion {
+  id?: number;
   calle: string;
   numero: string;
   barrio: string;
@@ -6,7 +7,18 @@ export interface Direccion {
 }
 
 export interface Telefono {
+  id?: number;
   numero: string;
+}
+
+export interface Caja {
+  id: number;
+  nombre?: string;
+}
+
+export interface Estado {
+  id: number;
+  nombre?: string;
 }
 
 export interface Socio {
@@ -14,7 +26,13 @@ export interface Socio {
   nombre: string;
   apellido: string;
   dni: number;
+  numeroBeneficio: string;
+  numeroSocio: number;
   correoElectronico: string;
+  fechaIngreso: string | Date;
+  fechaNacimiento: string | Date;
   direccion?: Direccion;
-  telefonos?: Telefono[];
+  caja: Caja;
+  estado: Estado;
+  telefonos: Telefono[];
 }
