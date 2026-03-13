@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { CajaService } from '../services/caja.service';
 import { EstadoService } from '../services/estado.service';
+import { SocioService } from '../services/socio.service';
 
 @Component({
   selector: 'app-admin',
@@ -14,11 +15,15 @@ import { EstadoService } from '../services/estado.service';
 export class AdminComponent implements OnInit {
   cajas: any[] = [];
   estados: any[] = [];
+  cantActivos: number = 0;
+  cantAdherentes: number = 0;
+  cantOtros: number = 0;
 
   constructor(
     private router: Router,
     private cajaService: CajaService,
     private estadoService: EstadoService,
+    private socioService: SocioService,
   ) {}
 
   ngOnInit(): void {
@@ -28,6 +33,11 @@ export class AdminComponent implements OnInit {
   cargarDatos(): void {
     this.cajaService.findAll().subscribe((data) => (this.cajas = data));
     this.estadoService.findAll().subscribe((data) => (this.estados = data));
+    this.socioService.getSocios().subscribe((socios) => {
+      this.cantActivos = socios.filter(s => s.estado?.nombre?.toLowerCase() === 'activo').length;
+      this.cantAdherentes = socios.filter(s => s.estado?.nombre?.toLowerCase() === 'adherente').length;
+      this.cantOtros = socios.length - (this.cantActivos + this.cantAdherentes);
+    });
   }
 
   // Funciones de Navegación
