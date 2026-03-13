@@ -42,21 +42,32 @@ export class SocioComponent implements OnInit {
   };
 
   get sociosFiltrados(): Socio[] {
-    if (!this.searchTerm) return this.socios;
+    let filtrados = this.socios;
 
-    const term = this.searchTerm.toLowerCase().trim();
+    // 1. Aplicamos el filtro si hay un término de búsqueda
+    if (this.searchTerm) {
+      const term = this.searchTerm.toLowerCase().trim();
+      filtrados = this.socios.filter((socio) => {
+        const nombre = socio.nombre.toLowerCase();
+        const apellido = socio.apellido.toLowerCase();
+        const dni = socio.dni.toString();
 
-    return this.socios.filter((socio) => {
-      const nombre = socio.nombre.toLowerCase();
-      const apellido = socio.apellido.toLowerCase();
-      const dni = socio.dni.toString();
+        return (
+          apellido.startsWith(term) ||
+          nombre.startsWith(term) ||
+          dni.startsWith(term)
+        );
+      });
+    }
 
-      // Filtra si el apellido, nombre o DNI EMPIEZAN con el término
-      return (
-        apellido.startsWith(term) ||
-        nombre.startsWith(term) ||
-        dni.startsWith(term)
-      );
+    // 2. Ordenamos alfabéticamente por apellido
+    return filtrados.sort((a, b) => {
+      const apellidoA = a.apellido.toLowerCase();
+      const apellidoB = b.apellido.toLowerCase();
+
+      if (apellidoA < apellidoB) return -1;
+      if (apellidoA > apellidoB) return 1;
+      return 0;
     });
   }
 
