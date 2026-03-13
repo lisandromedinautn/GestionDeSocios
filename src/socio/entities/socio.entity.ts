@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   ManyToMany,
+  OneToMany, // <--- Asegúrate de importar esto
   JoinTable,
   JoinColumn,
 } from 'typeorm';
@@ -11,6 +12,7 @@ import { Caja } from '../../caja/entities/caja.entity';
 import { Estado } from '../../estado/entities/estado.entity';
 import { Direccion } from '../../direccion/entities/direccion.entity';
 import { Telefono } from '../../telefono/entities/telefono.entity';
+import { Cuota } from '../../cuota/entities/cuota.entity'; // Ajusta la ruta si es necesario
 
 @Entity('socios')
 export class Socio {
@@ -23,7 +25,7 @@ export class Socio {
   @Column()
   apellido!: string;
 
-  @Column({ unique: true }) // El DNI no debería repetirse
+  @Column({ unique: true })
   dni!: number;
 
   @Column()
@@ -41,9 +43,8 @@ export class Socio {
   @Column({ type: 'date' })
   fechaNacimiento!: Date;
 
-  // --- RELACIONES (Foreign Keys) ---
+  // --- RELACIONES ---
 
-  // Muchos socios pueden vivir en la misma dirección (o puedes usar @OneToOne si es estricto)
   @ManyToOne(() => Direccion, {
     cascade: true,
     onDelete: 'SET NULL',
@@ -51,20 +52,21 @@ export class Socio {
   @JoinColumn({ name: 'direccionId' })
   direccion?: Direccion;
 
-  // Muchos socios pertenecen a una Caja
   @ManyToOne(() => Caja)
   caja!: Caja;
 
-  // Muchos socios tienen un Estado ("Activo", "Deudor", etc.)
   @ManyToOne(() => Estado)
   estado!: Estado;
 
-  // Relación Muchos a Muchos (Tabla intermedia socio x telefono)
-  @ManyToMany(() => Telefono, { cascade: true }) // <-- Asegúrate de tener cascade: true
+  @ManyToMany(() => Telefono, { cascade: true })
   @JoinTable({
     name: 'socio_telefonos',
     joinColumn: { name: 'socio_id', referencedColumnName: 'id' },
     inverseJoinColumn: { name: 'telefono_id', referencedColumnName: 'id' },
   })
   telefonos!: Telefono[];
+
+
+  @OneToMany(() => Cuota, (cuota) => cuota.socio)
+  cuotas!: Cuota[]; 
 }

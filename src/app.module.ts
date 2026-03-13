@@ -5,6 +5,7 @@ import { DireccionModule } from './direccion/direccion.module';
 import { CajaModule } from './caja/caja.module';
 import { EstadoModule } from './estado/estado.module';
 import { TelefonoModule } from './telefono/telefono.module';
+import { CuotaModule } from './cuota/cuota.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TelefonoModule } from './telefono/telefono.module';
     CajaModule,
     EstadoModule,
     TelefonoModule,
+    CuotaModule,
   ],
 })
 export class AppModule {}
