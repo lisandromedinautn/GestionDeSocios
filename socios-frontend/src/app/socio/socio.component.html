@@ -72,6 +72,20 @@
               </div>
             </td>
           </tr>
+          <tr *ngIf="sociosFiltrados.length === 0">
+            <td colspan="4" class="no-results-container">
+              <div class="no-results-content">
+                <span class="no-results-icon">🔎</span>
+                <p class="no-results-text">
+                  No se encontraron socios que comiencen con 
+                  <span class="term-highlight">"{{ searchTerm }}"</span>
+                </p>
+                <button (click)="searchTerm = ''" class="btn-clear-search">
+                  Limpiar búsqueda
+                </button>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

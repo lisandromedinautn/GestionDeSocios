@@ -43,13 +43,21 @@ export class SocioComponent implements OnInit {
 
   get sociosFiltrados(): Socio[] {
     if (!this.searchTerm) return this.socios;
-    const term = this.searchTerm.toLowerCase();
-    return this.socios.filter(
-      (socio) =>
-        socio.nombre.toLowerCase().includes(term) ||
-        socio.apellido.toLowerCase().includes(term) ||
-        socio.dni.toString().includes(term),
-    );
+
+    const term = this.searchTerm.toLowerCase().trim();
+
+    return this.socios.filter((socio) => {
+      const nombre = socio.nombre.toLowerCase();
+      const apellido = socio.apellido.toLowerCase();
+      const dni = socio.dni.toString();
+
+      // Filtra si el apellido, nombre o DNI EMPIEZAN con el término
+      return (
+        apellido.startsWith(term) ||
+        nombre.startsWith(term) ||
+        dni.startsWith(term)
+      );
+    });
   }
 
   eliminarSocio = (id?: number): void => {
