@@ -23,6 +23,13 @@ export interface Estado {
   nombre?: string;
 }
 
+export interface Cuota {
+  id: number;
+  mes: number;
+  anio: number;
+  isPagado: boolean;
+}
+
 export interface Socio {
   id?: number;
   nombre: string;

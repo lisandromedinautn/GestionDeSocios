@@ -92,12 +92,50 @@
         </div>
       </div>
 
-      <div class="mt-5 pt-4 border-top d-flex justify-content-center gap-3">
-        <button class="btn-back-modern px-4 py-3 fs-6" (click)="volver()">
+      <div class="mt-5 pt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h6 class="section-title-sm m-0">📅 Control de Cuotas</h6>
+          
+          <div class="year-selector-pill">
+            <button (click)="cambiarAnio(-1)" class="btn-nav-year">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+            <span class="year-label">{{ anioActual }}</span>
+            <button (click)="cambiarAnio(1)" class="btn-nav-year">
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+        
+        <div class="cuotas-wrapper">
+          <div class="cuotas-grid" *ngIf="cuotas.length > 0; else noCuotas">
+            <div *ngFor="let cuota of cuotas" 
+                 class="cuota-card" 
+                 [class.paga]="cuota.isPagado"
+                 (click)="toggleEstadoCuota(cuota)">
+              <span class="cuota-mes">{{ mesesLabels[cuota.mes - 1] }}</span>
+              <span class="cuota-status">{{ cuota.isPagado ? 'PAGADO' : 'PENDIENTE' }}</span>
+            </div>
+          </div>
+
+          <ng-template #noCuotas>
+            <div class="empty-cuotas-box">
+              <div class="icon-calendar-empty">🗓️</div>
+              <p class="text-muted fw-bold mb-4">No hay cuotas para el periodo {{ anioActual }}</p>
+              <button class="btn-generate-artisan" (click)="ejecutarGeneracion()">
+                <i class="fas fa-magic me-2"></i> Generar Cuotas
+              </button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+
+      <div class="footer-actions-container">
+        <button class="btn-back-modern" (click)="volver()">
           <i class="fas fa-arrow-left me-2"></i>
           Volver al Listado
         </button>
-        <button class="btn-edit-modern px-4 py-3 fs-6" (click)="irAEditar(socio.id!)">
+        <button class="btn-edit-modern" (click)="irAEditar(socio.id!)">
           <i class="fas fa-user-edit me-2"></i>
           Modificar Datos
         </button>
