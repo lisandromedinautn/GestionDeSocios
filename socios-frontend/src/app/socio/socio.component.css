@@ -138,6 +138,13 @@
   font-weight: 600; 
   color: #713e5a; 
   font-size: 1.15rem; /* Aumentado de 0.95rem */
+  
+  /* Nuevas propiedades para truncar el texto */
+  display: block;
+  max-width: 280px;        /* Ajusta este ancho máximo según lo que consideres ideal */
+  overflow: hidden;
+  text-overflow: ellipsis; /* Esto añade los "..." automáticamente */
+  white-space: nowrap;
 }
 
 .sub-text { 
