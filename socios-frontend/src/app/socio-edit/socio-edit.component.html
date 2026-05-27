@@ -25,16 +25,19 @@
           </div>
           <div class="col-md-4">
             <label class="form-label">DNI</label>
-            <input type="number" formControlName="dni" class="form-control">
+            <input type="number" formControlName="dni" class="form-control"
+            (wheel)="$event.preventDefault()">
           </div>
 
           <div class="col-md-4">
             <label class="form-label">N° Socio</label>
-            <input type="number" formControlName="numeroSocio" class="form-control">
+            <input type="number" formControlName="numeroSocio" class="form-control"
+            (wheel)="$event.preventDefault()">
           </div>
           <div class="col-md-4">
             <label class="form-label">N° Beneficio</label>
-            <input type="number" formControlName="numeroBeneficio" class="form-control">
+            <input type="number" formControlName="numeroBeneficio" class="form-control"
+            (wheel)="$event.preventDefault()">
           </div>
           <div class="col-md-4">
             <label class="form-label">Correo Electrónico</label>
@@ -112,7 +115,8 @@
         <div formArrayName="telefonos">
           <div *ngFor="let tel of telefonos.controls; let i=index" [formGroupName]="i" class="row g-2 mb-2">
             <div class="col-md-10">
-              <input type="number" formControlName="numero" class="form-control" placeholder="Número de contacto">
+              <input type="number" formControlName="numero" class="form-control" placeholder="Número de contacto"
+              (wheel)="$event.preventDefault()">
             </div>
             <div class="col-md-2">
               <button type="button" class="btn btn-remove-custom w-100" (click)="removerTelefono(i)">✕</button>

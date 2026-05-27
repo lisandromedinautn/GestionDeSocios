@@ -22,7 +22,7 @@ import { EstadoService } from '../services/estado.service';
 })
 export class SocioCreateComponent implements OnInit {
   socioForm!: FormGroup;
-  
+
   // Arreglos dinámicos
   cajas: any[] = [];
   estados: any[] = [];
@@ -31,7 +31,7 @@ export class SocioCreateComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private socioService: SocioService,
-    private cajaService: CajaService,    // Nuevo servicio
+    private cajaService: CajaService, // Nuevo servicio
     private estadoService: EstadoService, // Nuevo servicio
     private router: Router,
   ) {}
@@ -45,7 +45,7 @@ export class SocioCreateComponent implements OnInit {
     // Obtenemos cajas y estados simultáneamente
     forkJoin({
       cajas: this.cajaService.findAll(),
-      estados: this.estadoService.findAll()
+      estados: this.estadoService.findAll(),
     }).subscribe({
       next: (res) => {
         this.cajas = res.cajas;
@@ -55,7 +55,7 @@ export class SocioCreateComponent implements OnInit {
       error: (err) => {
         console.error('Error al cargar datos maestros:', err);
         this.cargandoData = false;
-      }
+      },
     });
   }
 
@@ -120,7 +120,8 @@ export class SocioCreateComponent implements OnInit {
       // Limpieza de campos opcionales de dirección
       if (payload.direccion) {
         if (!payload.direccion.piso) delete payload.direccion.piso;
-        if (!payload.direccion.departamento) delete payload.direccion.departamento;
+        if (!payload.direccion.departamento)
+          delete payload.direccion.departamento;
       }
 
       this.socioService.createSocio(payload).subscribe({

@@ -17,6 +17,7 @@ export class SocioService {
       // Usar el método .create() es vital porque mapea el DTO a la clase Entidad
       // detectando qué objetos son relaciones.
       const nuevoSocio = this.socioRepository.create(createSocioDto);
+      console.log('Nuevo socio creado (antes de guardar):', nuevoSocio);
 
       return await this.socioRepository.save(nuevoSocio);
     } catch (error) {
@@ -57,7 +58,7 @@ export class SocioService {
         `No se pudo actualizar: Socio #${id} no existe`,
       );
     }
-
+    console.log('socio actualizado:', socio);
     return await this.socioRepository.save(socio);
   }
 
