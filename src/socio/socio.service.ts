@@ -17,7 +17,6 @@ export class SocioService {
       // Usar el método .create() es vital porque mapea el DTO a la clase Entidad
       // detectando qué objetos son relaciones.
       const nuevoSocio = this.socioRepository.create(createSocioDto);
-      console.log('Nuevo socio creado (antes de guardar):', nuevoSocio);
 
       return await this.socioRepository.save(nuevoSocio);
     } catch (error) {
@@ -46,20 +45,29 @@ export class SocioService {
     }
     return socio;
   }
-
   async update(id: number, updateSocioDto: UpdateSocioDto): Promise<Socio> {
-    const socio = await this.socioRepository.preload({
-      id: id,
-      ...updateSocioDto,
-    });
+    try {
+      const socio = await this.socioRepository.preload({
+        id: id,
+        ...updateSocioDto,
+      });
 
-    if (!socio) {
-      throw new NotFoundException(
-        `No se pudo actualizar: Socio #${id} no existe`,
+      if (!socio) {
+        throw new NotFoundException(
+          `No se pudo actualizar: Socio #${id} no existe`,
+        );
+      }
+
+      console.log('Socio prelado listo para actualizar:', socio);
+      return await this.socioRepository.save(socio);
+    } catch (error) {
+      // Captura y muestra el error exacto en la consola del servidor
+      console.error(
+        `❌ Error detallado al actualizar el socio con ID ${id}:`,
+        error,
       );
+      throw error;
     }
-    console.log('socio actualizado:', socio);
-    return await this.socioRepository.save(socio);
   }
 
   async remove(id: number): Promise<void> {

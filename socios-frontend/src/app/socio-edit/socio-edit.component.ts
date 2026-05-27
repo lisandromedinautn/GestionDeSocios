@@ -146,13 +146,35 @@ export class SocioEditComponent implements OnInit {
 
     if (this.esEdicion && this.socioId) {
       this.socioService.updateSocio(this.socioId, datosSocio).subscribe({
-        next: () => this.router.navigate(['/socios']),
-        error: (err) => console.error('Error al actualizar', err),
+        next: () => {
+          alert('Socio actualizado con éxito'); // Alerta de éxito opcional
+          this.router.navigate(['/socios']);
+        },
+        error: (err) => {
+          console.error('Error al actualizar:', err);
+          // Si el servidor (NestJS) devuelve un mensaje controlado, lo mostramos
+          if (err.error && err.error.message) {
+            alert('Error del servidor al actualizar: ' + err.error.message);
+          } else {
+            alert('Ocurrió un error inesperado al actualizar el socio.');
+          }
+        },
       });
     } else {
+      // Por si acaso se usa este bloque para crear
       this.socioService.createSocio(datosSocio).subscribe({
-        next: () => this.router.navigate(['/socios']),
-        error: (err) => console.error('Error al crear', err),
+        next: () => {
+          alert('Socio creado con éxito');
+          this.router.navigate(['/socios']);
+        },
+        error: (err) => {
+          console.error('Error al crear:', err);
+          if (err.error && err.error.message) {
+            alert('Error del servidor: ' + err.error.message);
+          } else {
+            alert('Ocurrió un error al crear el socio.');
+          }
+        },
       });
     }
   }
