@@ -92,7 +92,7 @@ CORS backend habilitado sólo para `http://localhost:4200` en `src/main.ts:18`.
 - Listado en `socios-frontend/src/app/socio/socio.component.ts:16` con `SocioService.getSocios()` (`GET /socio` con `relations`). Crear/ver/editar/eliminar vía `/socios/crear`, `/socios/ver/:id`, `/socios/editar/:id`.
 - Cuotas: `src/cuota/cuota.service.ts:26` `generarCuotasAnuales(anio)` y `togglePago`.
 
-### Filtro complejo (sin hardcodeo)
+### Filtro complejo
 - **Fuente dinámica**: estados desde `GET /estado` (`EstadoService.findAll()` en `socio.component.ts:75`), nunca `=== 'Activo'`. Soporta nuevos estados (ej. `Vitalicio`) sin deploy front.
 - **Dropdown en header Estado**: funnel con badge `selectedEstadoIds.size`, lista de checkboxes, `Seleccionar todo/Limpiar/Cerrar`, contador, cierre on-click-outside (`HostListener` en `socio.component.ts:51`). Se resetea al recargar.
 - **Lógica**: `estadoFilter` interno `OR` (`socio.estado.id IN set`), combinado con búsqueda `AND` (lupa respeta filtros activos). Implementado en `socios-frontend/src/app/socio/socio.utils.ts:10` (`filterSocios`).
