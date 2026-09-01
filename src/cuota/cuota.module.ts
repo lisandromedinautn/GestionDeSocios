@@ -3,7 +3,7 @@ import { CuotaService } from './cuota.service';
 import { CuotaController } from './cuota.controller';
 import { Cuota } from './entities/cuota.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Socio } from 'src/socio/entities/socio.entity';
+import { Socio } from '../socio/entities/socio.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Cuota, Socio])],

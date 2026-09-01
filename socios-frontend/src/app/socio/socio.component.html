@@ -28,18 +28,93 @@
       </div>
     </div>
 
+    <!-- Filtros activos bar -->
+    <div class="filters-bar" *ngIf="hasEstadoFilter || searchTerm">
+      <div class="filters-left">
+        <span class="filters-label">Filtros:</span>
+        <span *ngIf="searchTerm" class="filter-chip">
+          Búsqueda: "{{ searchTerm }}"
+          <button class="chip-close" (click)="limpiarBusqueda()" title="Limpiar búsqueda">×</button>
+        </span>
+        <span *ngFor="let est of estados" >
+          <span *ngIf="isEstadoSelected(est.id)" class="filter-chip filter-chip-estado">
+            {{ est.nombre }}
+            <button class="chip-close" (click)="toggleEstado(est.id)" title="Quitar filtro">×</button>
+          </span>
+        </span>
+      </div>
+      <button *ngIf="hasEstadoFilter || searchTerm" (click)="clearEstadoFilter(); limpiarBusqueda()" class="btn-clear-filters">
+        Limpiar todo
+      </button>
+    </div>
+
+    <div class="sort-bar">
+      <div class="sort-left">
+        <span class="pagination-info">{{ paginationInfo }}</span>
+        <span *ngIf="hasEstadoFilter" class="filter-count">({{ selectedEstadoIds.size }} estado{{ selectedEstadoIds.size>1 ? 's' : '' }} filtrado{{ selectedEstadoIds.size>1 ? 's' : '' }})</span>
+      </div>
+      <div class="sort-right">
+        <label class="sort-label">Ordenar por:</label>
+        <select [ngModel]="sortBy" (ngModelChange)="onSortChange($event)" class="sort-select">
+          <option value="apellido">Apellido</option>
+          <option value="nombre">Nombre</option>
+          <option value="dni">DNI</option>
+          <option value="numeroSocio">N° Socio</option>
+          <option value="estado">Estado</option>
+        </select>
+        <button (click)="toggleSortDir()" class="btn-sort-dir" [title]="sortDir==='asc' ? 'Ascendente' : 'Descendente'">
+          {{ sortDir==='asc' ? '▲' : '▼' }}
+        </button>
+      </div>
+    </div>
+
     <div class="card">
       <table class="table table-hover">
         <thead>
           <tr>
             <th>Socio / Identificación</th>
-            <th>Estado</th>
+            <th class="th-estado">
+              <div class="th-estado-content filter-dropdown-wrapper">
+                <span>Estado</span>
+                <button class="btn-filter-funnel" 
+                        [class.active]="hasEstadoFilter"
+                        (click)="toggleEstadoFilter($event)"
+                        [title]="hasEstadoFilter ? 'Filtros activos: ' + selectedEstadoIds.size : 'Filtrar por estado'">
+                  <span class="funnel-icon">▼</span>
+                  <span *ngIf="hasEstadoFilter" class="filter-badge">{{ selectedEstadoIds.size }}</span>
+                </button>
+                <!-- Dropdown Excel-like -->
+                <div *ngIf="isEstadoFilterOpen" class="excel-dropdown" (click)="$event.stopPropagation()">
+                  <div class="excel-dropdown-header">
+                    <span class="dropdown-title">Filtrar por Estado</span>
+                    <button class="dropdown-close" (click)="isEstadoFilterOpen=false">×</button>
+                  </div>
+                  <div class="excel-dropdown-actions">
+                    <button (click)="selectAllEstados()" class="btn-dropdown-action" [disabled]="isAllEstadosSelected">Seleccionar todo</button>
+                    <button (click)="clearEstadoFilter()" class="btn-dropdown-action" [disabled]="!hasEstadoFilter">Limpiar</button>
+                  </div>
+                  <div class="excel-dropdown-list">
+                    <label *ngFor="let est of estados" class="excel-checkbox-label">
+                      <input type="checkbox" 
+                             [checked]="isEstadoSelected(est.id)" 
+                             (change)="toggleEstado(est.id)">
+                      <span class="checkbox-text">{{ est.nombre }}</span>
+                    </label>
+                    <div *ngIf="estados.length===0" class="dropdown-empty">Cargando estados...</div>
+                  </div>
+                  <div class="excel-dropdown-footer">
+                    <span class="dropdown-count">{{ selectedEstadoIds.size }} de {{ estados.length }} seleccionados</span>
+                    <button (click)="isEstadoFilterOpen=false" class="btn-dropdown-close">Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </th>
             <th>Información de Contacto</th>
             <th class="text-center">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let socio of sociosFiltrados">
+          <tr *ngFor="let socio of sociosPaginados">
             <td>
               <div class="data-group">
                 <span class="main-text" [title]="(socio.apellido | uppercase) + ', ' + socio.nombre">
@@ -79,17 +154,44 @@
               <div class="no-results-content">
                 <span class="no-results-icon">🔎</span>
                 <p class="no-results-text">
-                  No se encontraron socios que comiencen con 
-                  <span class="term-highlight">"{{ searchTerm }}"</span>
+                  <span *ngIf="searchTerm || hasEstadoFilter">No se encontraron socios con los filtros actuales</span>
+                  <span *ngIf="!searchTerm && !hasEstadoFilter">No hay socios cargados</span>
+                  <span *ngIf="searchTerm" class="term-highlight"> "{{ searchTerm }}"</span>
+                  <span *ngIf="hasEstadoFilter"> (estados seleccionados)</span>
                 </p>
-                <button (click)="searchTerm = ''" class="btn-clear-search">
-                  Limpiar búsqueda
+                <button (click)="limpiarBusqueda(); clearEstadoFilter()" class="btn-clear-search">
+                  Limpiar filtros
                 </button>
               </div>
             </td>
           </tr>
         </tbody>
       </table>
+
+      <!-- Paginación -->
+      <div *ngIf="sociosFiltrados.length > 0" class="pagination-bar">
+        <div class="pagination-info-bottom">
+          Página {{ currentPage }} de {{ totalPages }} — {{ paginationInfo }}
+        </div>
+        <div class="pagination-controls">
+          <button (click)="prevPage()" [disabled]="currentPage===1" class="btn-page">‹ Anterior</button>
+          <button *ngFor="let p of pages" 
+                  (click)="goToPage(p)" 
+                  [class.active]="p===currentPage"
+                  class="btn-page-number">
+            {{ p }}
+          </button>
+          <button (click)="nextPage()" [disabled]="currentPage===totalPages" class="btn-page">Siguiente ›</button>
+        </div>
+        <div class="page-size-selector">
+          <label>Por página:</label>
+          <select [(ngModel)]="pageSize" (ngModelChange)="currentPage=1" class="sort-select small">
+            <option [ngValue]="10">10</option>
+            <option [ngValue]="20">20</option>
+            <option [ngValue]="50">50</option>
+          </select>
+        </div>
+      </div>
     </div>
   </div>
 </div>
